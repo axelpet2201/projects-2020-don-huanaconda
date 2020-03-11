@@ -1,0 +1,24 @@
+import numpy as np
+from scipy import optimize 
+import matplotlib.pyplot as plt 
+
+#Defining function
+def utilityfunction(c, v, l, epsilon):
+    u = np.log(c)-v*((l**(1+(1/epsilon)))/(1+(1/epsilon)))
+    return u 
+
+#Defining BC
+def budgetconstraint(l, w, m, tau0, tau1,kappa):
+    x = m + w*l - (tau0*w*l + tau1*max(w*l - kappa, 0))
+    return x
+
+#Defining solve
+def solve(u):
+    
+    obj = lambda u: f(u[0])
+    res = optimize.minimize(obj, u, method='Nelder-Meat')
+    u_best_scipy = res.u[0]
+    f_best_scipy = res.fun
+    
+    print(f'best with scipy.optimise is {f_best_scipy:.8f} at u = {u_best_scipy:.8f}')
+    
